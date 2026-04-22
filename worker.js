@@ -1,13 +1,10 @@
 export default {
-  async fetch(request, evn) {
-    // Xử lý GET request (test trực tiếp trên trình duyệt)
+  async fetch(request, env) {
     if (request.method === 'GET') {
       return new Response('NOVA Proxy is running! ✅', {
         headers: { 'Content-Type': 'text/plain' }
       });
     }
-
-    // Xử lý CORS preflight
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         headers: {
@@ -18,20 +15,35 @@ export default {
       });
     }
 
-    // Xử lý POST từ chatbot
     const body = await request.json();
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': evn.ANTHROPIC_KEY, // API key của bạn
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify(body)
-    });
+
+    // Chuyển messages sang định dạng Gemini
+    const geminiMessages = body.messages.map(m => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }]
+    }));
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.ANTHROPIC_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system_instruction: {
+            parts: [{ text: body.system || 'Bạn là NOVA, trợ lý AI thông minh, trả lời bằng tiếng Việt.' }]
+          },
+          contents: geminiMessages
+        })
+      }
+    );
 
     const data = await response.json();
-    return new Response(JSON.stringify(data), {
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Xin lỗi, tôi không thể trả lời lúc này.';
+
+    // Trả về định dạng giống Anthropic để không cần sửa index.html
+    return new Response(JSON.stringify({
+      content: [{ text }]
+    }), {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
