@@ -38,7 +38,7 @@ export default {
     );
 
 const data = await response.json();
-const text = data.candidates[0]content.parts.[0].text;
+const text = data.candidates?.[0]?.content?.parts?.[0]?.text || JSON.stringify(data);
     // Trả về định dạng giống Anthropic để không cần sửa index.html
     return new Response(JSON.stringify({
       content: [{ text }]
