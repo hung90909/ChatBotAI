@@ -622,21 +622,16 @@
     showTyping();
 
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-      headers: {
-  'Content-Type': 'application/json',
-  'x-api-key': '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', // thay bằng key của bạn
-  'anthropic-version': '2023-06-01',
-  'anthropic-dangerous-direct-browser-access': 'true'
-},
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          system: `Bạn là NOVA — một trợ lý AI thông minh, thân thiện và hữu ích. Bạn trả lời bằng tiếng Việt, ngắn gọn, rõ ràng và tự nhiên. Ngày hôm nay: ${new Date().toLocaleDateString('vi-VN', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}.`,
-          messages: conversationHistory
-        })
-      });
+const response = await fetch('https://nova-proxy.vanhung282003.workers.dev', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 1000,
+    system: `Bạn là NOVA — một trợ lý AI thông minh, thân thiện và hữu ích. Bạn trả lời bằng tiếng Việt, ngắn gọn, rõ ràng và tự nhiên. Ngày hôm nay: ${new Date().toLocaleDateString('vi-VN', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}.`,
+    messages: conversationHistory
+  })
+});
 
       const data = await response.json();
       removeTyping();
