@@ -37,9 +37,9 @@ export default {
       }
     );
 
-    const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Xin lỗi, tôi không thể trả lời lúc này.';
-
+const data = await response.json();
+console.log('Gemini response:', JSON.stringify(data)); // thêm dòng này
+const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Xin lỗi, tôi không thể trả lời lúc này.';
     // Trả về định dạng giống Anthropic để không cần sửa index.html
     return new Response(JSON.stringify({
       content: [{ text }]
