@@ -1,5 +1,13 @@
 export default {
   async fetch(request) {
+    // Xử lý GET request (test trực tiếp trên trình duyệt)
+    if (request.method === 'GET') {
+      return new Response('NOVA Proxy is running! ✅', {
+        headers: { 'Content-Type': 'text/plain' }
+      });
+    }
+
+    // Xử lý CORS preflight
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         headers: {
@@ -10,12 +18,13 @@ export default {
       });
     }
 
+    // Xử lý POST từ chatbot
     const body = await request.json();
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': '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',
+        'x-api-key': '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', // API key của bạn
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify(body)
