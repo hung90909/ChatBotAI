@@ -24,7 +24,7 @@ export default {
     }));
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.ANTHROPIC_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyA6nUxKqYTACjA8sS57M7GwH-Lmx_loX1s`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -38,8 +38,7 @@ export default {
     );
 
 const data = await response.json();
-console.log('Gemini response:', JSON.stringify(data)); // thêm dòng này
-const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Xin lỗi, tôi không thể trả lời lúc này.';
+const text = data.candidates[0]content.parts.[0].text;
     // Trả về định dạng giống Anthropic để không cần sửa index.html
     return new Response(JSON.stringify({
       content: [{ text }]
