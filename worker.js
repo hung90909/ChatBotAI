@@ -15,39 +15,40 @@ export default {
       });
     }
 
-   const keys = [
-      env.GEMINI_KEY,
-      env.GEMINI_KEY_1,
-    ].filter(Boolean); // Lọc bỏ key trống nếu chưa thêm đủ
+    const body = await request.json();
 
-    
-    // Chọn key ngẫu nhiên
-    const apiKey = keys[Math.floor(Math.random() * keys.length)];
+    // Chuyển messages sang định dạng OpenRouter
+    const messages = [];
 
-      const body = await request.json();
-    const geminiMessages = body.messages.map(m => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }]
-    }));
+    // Thêm system prompt
+    if (body.system) {
+      messages.push({ role: 'system', content: body.system });
+    }
 
-    const response = await fetch(
-     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
-       ,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: {
-            parts: [{ text: body.system || 'Bạn là NOVA, trợ lý AI thông minh, trả lời bằng tiếng Việt.' }]
-          },
-          contents: geminiMessages
-        })
-      }
-    );
+    // Thêm lịch sử chat
+    body.messages.forEach(m => {
+      messages.push({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content });
+    });
 
-const data = await response.json();
-const text = data.candidates?.[0]?.content?.parts?.[0]?.text || JSON.stringify(data);
-    // Trả về định dạng giống Anthropic để không cần sửa index.html
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${env.OPENROUTER_KEY}`,
+        'HTTP-Referer': 'https://hung90909.github.io',
+        'X-Title': 'NOVA Chatbot',
+      },
+      body: JSON.stringify({
+        model: 'meta-llama/llama-3.3-70b-instruct:free',
+        messages: messages,
+        max_tokens: 1000,
+      })
+    });
+
+    const data = await response.json();
+    const text = data.choices?.[0]?.message?.content || JSON.stringify(data);
+
+    // Trả về định dạng giống cũ để không cần sửa index.html
     return new Response(JSON.stringify({
       content: [{ text }]
     }), {
