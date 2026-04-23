@@ -628,7 +628,7 @@ try {
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1000,
       system: `Bạn là NOVA — một trợ lý AI thông minh, thân thiện và hữu ích. Bạn trả lời bằng tiếng Việt, ngắn gọn, rõ ràng và tự nhiên. Ngày hôm nay: ${new Date().toLocaleDateString('vi-VN', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}.`,
-      messages: conversationHistory
+      messages: conversationHistory.slice(-6)
     })
   });
 
