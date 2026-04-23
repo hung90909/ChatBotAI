@@ -1,5 +1,5 @@
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     if (request.method === 'GET') {
       return new Response('NOVA Proxy is running! ✅', {
         headers: { 'Content-Type': 'text/plain' }
@@ -15,13 +15,6 @@ export default {
       });
     }
 
-    const body = await request.json();
-
-    // Chuyển messages sang định dạng Gemini
-    const geminiMessages = body.messages.map(m => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }]
-    }));
    const keys = [
       env.GEMINI_KEY,
       env.GEMINI_KEY_1,
