@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NOVA — Trợ Lý Quản Lý Tài Sản Công</title>
+<title>Trợ Lý Quản Lý Tài Sản Công</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
@@ -232,7 +232,7 @@
     <div class="logo">
       <div class="logo-icon">✦</div>
       <div>
-        <div class="logo-text">NOVA</div>
+        <div class="logo-text">Sở Tài Chính Hà Nội</div>
         <div class="logo-sub">Quản lý Tài sản Công</div>
       </div>
     </div>
@@ -245,7 +245,7 @@
   <div id="messages">
     <div class="welcome" id="welcome-screen">
       <span class="welcome-emoji">🏛️</span>
-      <h2>Xin chào! Tôi là NOVA</h2>
+      <h2>Xin chào!</h2>
       <p>Trợ lý AI chuyên về Quản lý Tài sản Công cấp thành phố. Hỏi tôi về mua sắm, thanh lý, điều chuyển, kiểm kê tài sản — hoặc upload văn bản để tôi phân tích!</p>
       <div class="suggestions">
         <button class="suggestion-btn" onclick="sendSuggestion(this)">📋 Quy trình thanh lý tài sản</button>
@@ -281,7 +281,7 @@
         </svg>
       </button>
     </div>
-    <div class="footer-note">NOVA · Hỗ trợ PDF, Word, TXT · Thông tin chỉ mang tính tham khảo, vui lòng đối chiếu văn bản pháp luật hiện hành</div>
+    <div class="footer-note">Hỗ trợ PDF, Word, TXT · Thông tin chỉ mang tính tham khảo, vui lòng đối chiếu văn bản pháp luật hiện hành</div>
   </div>
 </div>
 
@@ -298,7 +298,7 @@
   let selectedFile = null;
   let extractedFileText = '';
 
-  const SYSTEM_PROMPT = `Bạn là NOVA — trợ lý AI chuyên về Quản lý Tài sản Công cấp thành phố tại Việt Nam, hỗ trợ cán bộ trong phòng ban xử lý các nghiệp vụ hàng ngày.
+  const SYSTEM_PROMPT = `Bạn là trợ lý AI chuyên về Quản lý Tài sản Công cấp thành phố tại Việt Nam, hỗ trợ cán bộ trong phòng ban xử lý các nghiệp vụ hàng ngày.
 
 PHẠM VI CHUYÊN MÔN:
 1. MUA SẮM TÀI SẢN CÔNG: Luật Đấu thầu số 22/2023/QH15, Nghị định 24/2024/NĐ-CP, quy trình lập kế hoạch, dự toán, tổ chức mua sắm, tiêu chuẩn định mức trang bị.
